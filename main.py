@@ -6,11 +6,7 @@
 #==========#
 import tkinter as tk
 from tkinter import *
-from tkinter.messagebox import *
-from re import sub
-from sys import exit
 import os
-from tkinter.filedialog import *
 global Shortcuts, Shortcut_File, ShortCut_List
 Shortcut_File = open("shortcuts.csv", 'r') # We'll open this for write at times too
 Shortcuts = {}
