@@ -6,6 +6,8 @@
 #==========#
 import tkinter as tk
 from tkinter import *
+from tkinter.filedialog import *
+
 import os
 global Shortcuts, Shortcut_File, ShortCut_List
 Shortcut_File = open("shortcuts.csv", 'r') # We'll open this for write at times too
@@ -30,11 +32,14 @@ class App(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.pack()
-    global ShortcutsFrame, Dsp_Entr, FP_Entr, Args_Entr
+    global ShortcutsFrame, Dsp_Entr, FP_Entr, Args_Entr, contents2
     ShortcutsFrame = Frame(root, relief=RIDGE, bd=1)
     ShortcutsFrame.pack(side = LEFT, fill=Y)
     Main = Frame(root, relief=RIDGE, bd=1)
     Main.pack(fill=BOTH, side=TOP)
+    def openfile():
+        files = askopenfilename()
+        contents2.set(files)
 
     Label(Main, text='\n\n').pack()
      # Add a text input for Disp. Name
@@ -45,18 +50,22 @@ class App(Frame):
     Dsp_Entr["textvariable"] = contents
     Dsp_Entr.pack()
     # Add a text input for filepath
+    Button(Main, text='Open File', command=openfile ).pack()
+
     Label(Main, text='Filepath').pack()
     FP_Entr = Entry(Main)
     contents2 = StringVar()
     contents2.set("")
     FP_Entr["textvariable"] = contents2
     FP_Entr.pack()
+
+
     # Add a Text input for arguments
     Label(Main, text='Arguments').pack()
     Args_Entr = Entry(Main)
-    contents2 = StringVar()
-    contents2.set("")
-    Args_Entr["textvariable"] = contents2
+    contents3 = StringVar()
+    contents3.set("")
+    Args_Entr["textvariable"] = contents3
     Args_Entr.pack()
 
     def make_Btn():
@@ -72,7 +81,7 @@ class App(Frame):
             Button(ShortcutsFrame, text=Shortcuts[y][0], command=lambda j=c : os.popen(f"wine {Shortcuts[names.index(j)][1]}") ).pack()
 
     # Add "Run" button
-    Run = Button(Main, text="Run With Wine", command=lambda:os.popen(f'wine {FP_Entr.get()} {Args_Entr.get()}') ).pack(side = LEFT)
+    Run = Button(Main, text="Run With Wine", command=lambda:os.popen(f'wine "{FP_Entr.get()}" {Args_Entr.get()}') ).pack(side = LEFT)
     make_Btn()
 
     def make_ShortCut():
@@ -80,7 +89,7 @@ class App(Frame):
         Filepath = FP_Entr.get()
         Args = Args_Entr.get()
         f = open("shortcuts.csv", 'a')
-        f.write(f'{DispName},{Filepath},{Args}\n')
+        f.write(f'{DispName},"{Filepath}",{Args}\n')
         f.close()
         Mk_List(Shortcut_File, Shortcuts, ShortCut_List)
         for widget in ShortcutsFrame.winfo_children():
