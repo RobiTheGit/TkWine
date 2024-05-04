@@ -1,14 +1,13 @@
 #!/usr/bin/python3
-#==========#
-#TkWine By #
-#RobiTheGit#
-# 4-28-24  #
-#==========#
+#   TkWine By
+#   RobiTheGit
+#   4-28-24
+
 import tkinter as tk
 from tkinter import *
-from tkinter.filedialog import *
-
+from tkinter.filedialog import askopenfilename
 import os
+
 global Shortcuts, Shortcut_File, ShortCut_List
 Shortcut_File = open("shortcuts.csv", 'r') # We'll open this for write at times too
 Shortcuts = {}
@@ -26,22 +25,23 @@ def Mk_List(Data, Dict, List):
         for y in range(len(dataitem)):
             Dict[x] = List[x].split(',')
             Dict[x][y] = dataitem[y]
-    print(Dict)
 
 class App(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.pack()
+
     global ShortcutsFrame, Dsp_Entr, FP_Entr, Args_Entr, contents2
     ShortcutsFrame = Frame(root, relief=RIDGE, bd=1)
     ShortcutsFrame.pack(side = LEFT, fill=Y)
     Main = Frame(root, relief=RIDGE, bd=1)
     Main.pack(fill=BOTH, side=TOP)
+
     def openfile():
         files = askopenfilename()
         contents2.set(files)
 
-    Label(Main, text='\n\n').pack()
+    Label(Main, text='TkWine - A Tkinter Frontend for WINE', font=('default','20','bold')).pack()
      # Add a text input for Disp. Name
     Label(Main, text='Display Name').pack()
     Dsp_Entr = Entry(Main)
@@ -72,7 +72,6 @@ class App(Frame):
         Mk_List(Shortcut_File, Shortcuts, ShortCut_List)
         for widget in ShortcutsFrame.winfo_children():
             widget.destroy()
-        Label(ShortcutsFrame, text='').pack()
         global y, names
         names = []
         for y in Shortcuts:
@@ -85,12 +84,9 @@ class App(Frame):
     make_Btn()
 
     def make_ShortCut():
-        DispName = Dsp_Entr.get()
-        Filepath = FP_Entr.get()
-        Args = Args_Entr.get()
-        f = open("shortcuts.csv", 'a')
-        f.write(f'{DispName},"{Filepath}",{Args}\n')
-        f.close()
+        shrotcut_csv = open("shortcuts.csv", 'a')
+        shrotcut_csv.write(f'{Dsp_Entr.get()},"{FP_Entr.get()}",{Args_Entr.get()}\n')
+        shrotcut_csv.close()
         Mk_List(Shortcut_File, Shortcuts, ShortCut_List)
         for widget in ShortcutsFrame.winfo_children():
             widget.destroy()
@@ -106,11 +102,7 @@ class App(Frame):
     Add_Shortcut = Button(Main, text="Add Shortcut", command=make_ShortCut).pack(side = LEFT)
 
 
-
-
-
-root.geometry("900x500")
-root.resizable(True,True)
-myapp = App(root)
-myapp.master.title("Tkinter Wine Frontend")
-myapp.mainloop()
+root.geometry("900x260")
+TkWine_App = App(root)
+TkWine_App.master.title("Tkinter Wine Frontend")
+TkWine_App.mainloop()
