@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #   TkWine By
-#   RobiTheGit
+#   RobiTheGit / RobiWanKenobi
 #   4-28-24
 
 import tkinter as tk
@@ -42,14 +42,14 @@ class App(Frame):
         contents2.set(files)
 
     Label(Main, text='TkWine - A Tkinter Frontend for WINE', font=('default','20','bold')).pack()
-     # Add a text input for Disp. Name
+     # Add a text input for the Program Display Name
     Label(Main, text='Display Name').pack()
     Dsp_Entr = Entry(Main)
     contents = StringVar()
     contents.set("")
     Dsp_Entr["textvariable"] = contents
     Dsp_Entr.pack()
-    # Add a text input for filepath
+    # Add a text input for filepath to the exe / msi / bat file
     Button(Main, text='Open File', command=openfile ).pack()
 
     Label(Main, text='Filepath').pack()
@@ -60,7 +60,7 @@ class App(Frame):
     FP_Entr.pack()
 
 
-    # Add a Text input for arguments
+    # Add a Text input for arguments for the program
     Label(Main, text='Arguments').pack()
     Args_Entr = Entry(Main)
     contents3 = StringVar()
@@ -68,18 +68,18 @@ class App(Frame):
     Args_Entr["textvariable"] = contents3
     Args_Entr.pack()
 
-    def make_Btn():
-        Mk_List(Shortcut_File, Shortcuts, ShortCut_List)
-        for widget in ShortcutsFrame.winfo_children():
+    def make_Btn(): # Recursivley make buttons for all the shortcuts
+        Mk_List(Shortcut_File, Shortcuts, ShortCut_List)    #Make the dictionary for the shortcuts
+        for widget in ShortcutsFrame.winfo_children():  #Delete all of the shortcut buttons that exist now
             widget.destroy()
         global y, names
         names = []
-        for y in Shortcuts:
+        for y in Shortcuts: #Make all of the shortcut buttons
             c = str(Shortcuts[y][1])
             names.append(c)
-            Button(ShortcutsFrame, text=Shortcuts[y][0], command=lambda j=c : os.popen(f"wine {Shortcuts[names.index(j)][1]}") ).pack()
+            Button(ShortcutsFrame, text=Shortcuts[y][0], command=lambda j=c : os.popen(f"wine {Shortcuts[names.index(j)][1]}") ).pack() # j is a simple little trick to make the buttons work correctly
 
-    # Add "Run" button
+    # Add "Run" button (Honestly, this button is really simple, however, the next line does fun things)
     Run = Button(Main, text="Run With Wine", command=lambda:os.popen(f'wine "{FP_Entr.get()}" {Args_Entr.get()}') ).pack(side = LEFT)
     make_Btn()
 
@@ -90,7 +90,6 @@ class App(Frame):
         Mk_List(Shortcut_File, Shortcuts, ShortCut_List)
         for widget in ShortcutsFrame.winfo_children():
             widget.destroy()
-        Label(ShortcutsFrame, text='ShortcutsFrame').pack()
         global y, names
         names = []
         for y in Shortcuts:
